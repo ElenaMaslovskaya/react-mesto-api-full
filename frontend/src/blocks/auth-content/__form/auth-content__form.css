@@ -1,0 +1,10 @@
+.auth-content__form {
+   color: #CCCCCC;
+   min-width: 358px;
+}
+
+@media (max-width: 425px) {
+   .auth-content__form {
+      min-width: 260px;
+   }
+}

@@ -1,0 +1,9 @@
+.element__like-container {
+   width: 246px;
+   height: 23px;
+   margin: 25px auto 32px;
+   display: grid;
+   grid-template-columns: 1fr 22px;
+   align-items: center;
+   justify-content: space-between;
+}

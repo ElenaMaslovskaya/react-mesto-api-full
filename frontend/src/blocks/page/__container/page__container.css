@@ -1,0 +1,14 @@
+.page__container {
+   min-height: 100%;
+   max-width: 880px;
+   margin: 45px auto 60px;
+   display: flex;
+   flex-direction: column;
+}
+
+@media screen and (max-width: 500px) {
+   .page__container {
+      min-width: 300px;
+      margin: 28px 19px 26px;
+   }
+}

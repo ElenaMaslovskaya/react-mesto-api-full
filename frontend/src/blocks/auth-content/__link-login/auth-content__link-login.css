@@ -1,0 +1,21 @@
+.auth-content__link-login {
+   display: block;
+   font-weight: normal;
+   font-size: 14px;
+   line-height: 17px;
+   text-align: center;
+   margin: 15px 0 24px 0;
+   color: white;
+   text-decoration: none;
+}
+
+.auth-content__link-login:hover {
+   opacity: 0.6;
+   cursor: pointer;
+}
+
+@media (max-width: 425px) {
+   .auth-content__link-login {
+      margin: 20px 0 0 0;
+   }
+}
