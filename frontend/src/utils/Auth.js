@@ -73,5 +73,5 @@ export class Auth {
 }
 
 export const auth = new Auth({
-   baseURL: 'https://auth.nomoreparties.co',
+   baseURL: 'https://api.maslovski.praktikum.nomoredomains.work',
 })

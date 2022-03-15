@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const { validateUser, validateLogin } = require('./middlewares/validations');
@@ -16,6 +17,11 @@ require('dotenv').config();
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(cors({
+  origin: 'https://maslovski.praktikum.nomoredomains.xyz',
+  credentials: true,
+}));
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
