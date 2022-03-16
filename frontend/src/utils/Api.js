@@ -23,7 +23,7 @@ export class Api {
    }
 
    //Получить карточки
-   getInitialCards() {
+   getInitialCards(token) {
       return fetch(`${this.source}/cards`, {
          method: 'GET',
          headers: {
