@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -19,17 +18,13 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://maslovski.praktikum.nomoredomains.xyz',
-  credentials: true,
-}));
+app.use(cors());
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
 app.use(helmet());
-app.use(cookieParser());
 app.use(bodyParser.json());
 
 const limiter = rateLimit({
@@ -41,6 +36,12 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(requestLogger); // подключаем логгер запросов
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 // роуты, не требующие авторизации,
 // например, регистрация и логин
