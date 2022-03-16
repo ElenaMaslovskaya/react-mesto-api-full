@@ -18,9 +18,7 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(cors({
-  Origin: 'https://maslovski.praktikum.nomoredomains.xyz',
-}));
+app.use(cors());
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
