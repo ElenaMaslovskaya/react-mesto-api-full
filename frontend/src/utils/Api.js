@@ -1,8 +1,6 @@
 export class Api {
    constructor(config) {
       this.source = config.source
-      this.cohort = config.cohort
-      this.token = config.token
    }
    //checking if the server's responce is ok
    _serverResponse(res) {
@@ -13,11 +11,11 @@ export class Api {
    }
 
    //Получить данные пользователя
-   getUserInfo() {
-      return fetch(`${this.source}/${this.cohort}/users/me`, {
+   getUserInfo(token) {
+      return fetch(`${this.source}/users/me`, {
          method: 'GET',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
          }
       })
@@ -26,10 +24,10 @@ export class Api {
 
    //Получить карточки
    getInitialCards() {
-      return fetch(`${this.source}/${this.cohort}/cards`, {
+      return fetch(`${this.source}/cards`, {
          method: 'GET',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
          }
       })
@@ -37,11 +35,11 @@ export class Api {
    }
 
    //Обновить информацию о пользователе
-   updateUserInfo({ name, about }) {
-      return fetch(`${this.source}/${this.cohort}/users/me`, {
+   updateUserInfo({ name, about }, token) {
+      return fetch(`${this.source}/users/me`, {
          method: 'PATCH',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
@@ -53,11 +51,11 @@ export class Api {
    }
 
    //Обновить аватар
-   updateUserAvatar({ avatar }) {
-      return fetch(`${this.source}/${this.cohort}/users/me/avatar`, {
+   updateUserAvatar({ avatar }, token) {
+      return fetch(`${this.source}/users/me/avatar`, {
          method: 'PATCH',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
@@ -68,11 +66,11 @@ export class Api {
    }
 
    //Добавить новую карточку
-   addNewCard({ name: place, link: source }) {
-      return fetch(`${this.source}/${this.cohort}/cards`, {
+   addNewCard({ name: place, link: source }, token) {
+      return fetch(`${this.source}/cards`, {
          method: 'POST',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
@@ -84,22 +82,22 @@ export class Api {
    }
 
    //Удалить карточку
-   deleteCard(cardId) {
-      return fetch(`${this.source}/${this.cohort}/cards/${cardId}`, {
+   deleteCard(cardId, token) {
+      return fetch(`${this.source}/cards/${cardId}`, {
          method: 'DELETE',
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
          }
       })
          .then(res => this._serverResponse(res))
    }
    
    //лайки
-   changeCardLikeStatus(cardId, isLiked) {
-      return fetch(`${this.source}/${this.cohort}/cards/likes/${cardId}`, {
+   changeCardLikeStatus(cardId, isLiked, token) {
+      return fetch(`${this.source}/cards/${cardId}/likes`, {
          method: `${isLiked ? "PUT" : "DELETE"}`,
          headers: {
-            authorization: this.token,
+            Authorization: `Bearer ${token}`,
             "Content-type": "application/json",
          },
       }).then((res) => {
@@ -110,7 +108,5 @@ export class Api {
 
 
 export const api = new Api({
-   source: 'https://mesto.nomoreparties.co/v1',
-   cohort: 'cohort-30',
-   token: 'eb8cafe8-806f-4128-87f6-a89a8c96159b'
+   source: 'https://api.maslovski.praktikum.nomoredomains.work',
 })

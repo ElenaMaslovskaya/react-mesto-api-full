@@ -7,6 +7,7 @@ export class Auth {
       return fetch(`${this.baseURL}/signup`, {
          method: 'POST',
          headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
          },
          body: JSON.stringify({
@@ -30,6 +31,7 @@ export class Auth {
       return fetch(`${this.baseURL}/signin`, {
          method: 'POST',
          headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
          },
          body: JSON.stringify({ email, password }),
@@ -46,11 +48,12 @@ export class Auth {
             }
          })
    };
-   //get access as a loggedIn user
+
    getData(token) {
       return fetch(`${this.baseURL}/users/me`, {
          method: 'GET',
          headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
          },

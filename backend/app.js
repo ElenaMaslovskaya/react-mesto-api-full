@@ -8,6 +8,7 @@ const cors = require('cors');
 const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const { validateUser, validateLogin } = require('./middlewares/validations');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const auth = require('./middlewares/auth');
@@ -39,6 +40,8 @@ const limiter = rateLimit({
 // подключаем rate-limiter
 app.use(limiter);
 
+app.use(requestLogger); // подключаем логгер запросов
+
 // роуты, не требующие авторизации,
 // например, регистрация и логин
 app.post('/signup', validateUser, createUser);
@@ -50,6 +53,8 @@ app.use(auth);
 // роуты, которым авторизация нужна
 app.use('/', users);
 app.use('/', cards);
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(() => {
   throw new NotFoundError('Страница не найдена');
