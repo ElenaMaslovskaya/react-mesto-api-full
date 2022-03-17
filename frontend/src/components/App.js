@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer";
 import Main from "./Main";
@@ -11,11 +12,10 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup.js";
 import ConfirmPopup from "./ConfirmPopup.js";
-import { auth } from "../utils/Auth.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
-import { api } from "../utils/Api"
+import { api } from "../utils/Api";
+import { auth } from "../utils/Auth.js";
 import "../index.css";
-import { Route, Switch, useHistory } from "react-router-dom";
 
 function App() {
     //регистрация и логин
@@ -35,6 +35,8 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
 
+    const token = localStorage.getItem('jwt');
+
     //Получить данные пользователя
     useEffect(() => {
         const token = localStorage.getItem('jwt');
@@ -42,7 +44,7 @@ function App() {
             auth.getData(token)
                 .then((data) => {
                     setIsLoggedIn(true)
-                    setEmail(data.data.email)
+                    setEmail(data.email)
                     history.push('/')
                 })
                 .catch(err => console.log(`Ошибка: ${err}`))
@@ -51,17 +53,17 @@ function App() {
 
     useEffect(() => {
         if (isLoggedIn) {
-            Promise.all([api.getUserInfo(), api.getInitialCards()])
+            Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
                 .then(resData => {
                     const [userData, cardList] = resData;
                     setCurrentUser(userData);
-                    setCards(cardList);
+                    setCards(cardList.reverse());
                 })
                 .catch((err) => {
                     console.log(`Ошибка: ${err}`)
                 })
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, token]);
 
     useEffect(() => {
         const closeByEscape = (e) => {
@@ -94,7 +96,7 @@ function App() {
 
     function handleUpdateUser(user) {
         setIsLoading(true);
-        api.updateUserInfo(user)
+        api.updateUserInfo(user, token)
             .then((user) => {
                 setCurrentUser(user);
                 closeAllPopups();
@@ -109,7 +111,7 @@ function App() {
 
     function handleUpdateAvatar(avatar) {
         setIsLoading(true);
-        api.updateUserAvatar(avatar)
+        api.updateUserAvatar(avatar, token)
             .then((avatar) => {
                 setCurrentUser(avatar);
                 closeAllPopups();
@@ -124,7 +126,7 @@ function App() {
 
     function handleAddPlaceSubmit(newCard) {
         setIsLoading(true);
-        api.addNewCard(newCard)
+        api.addNewCard(newCard, token)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
                 closeAllPopups();
@@ -144,16 +146,19 @@ function App() {
         setIsImagePopupOpen(false);
         setIsConfirmPopupOpen(false);
         setIsTooltipOpen(false);
+
         setSelectedCard({});
     };
 
     //Функция поставить/снять лайк карточки
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
+        console.log(isLiked);
         api
-            .changeCardLikeStatus(card._id, !isLiked)
+            .changeCardLikeStatus(card._id, isLiked, token)
             .then((newCard) => {
-                setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+                const newCards = cards.map((c) => c._id === card._id ? newCard.data : c);
+                setCards(newCards);
             })
             .catch((err) => {
                 console.log(`Ошибка при попытке поставить/снять лайк: ${err}`);
@@ -164,7 +169,7 @@ function App() {
     function handleCardDelete(card) {
         setIsLoading(true);
         api
-            .deleteCard(card._id)
+            .deleteCard(card._id, token)
             .then((newCard) => {
                 setCards((state) => state.filter((c) => c._id === card._id ? '' : newCard));
                 closeAllPopups();
@@ -183,7 +188,7 @@ function App() {
             .then((res) => {
                 if (res) {
                     setSignupState(true);
-                    handleLogin(password, email)
+                    handleLogin({ password, email })
                 }
             })
             .catch(() => {
@@ -203,7 +208,8 @@ function App() {
                 setSignupState(true);
                 setEmail(email);
                 setIsLoggedIn(true);
-                history.push('/')
+                history.push('/');
+                return res.token
             })
             .catch((err) => {
                 console.log(`Ошибка при авторизации: ${err}`);

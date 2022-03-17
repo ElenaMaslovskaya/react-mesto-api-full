@@ -25,13 +25,10 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((user) => res.status(201).send({
+    .then(() => res.status(201).send({
       data:
       {
-        name: user.name,
-        about: user.about,
-        avatar,
-        email: user.email,
+        name, about, avatar, email,
       },
     }))
     .catch((err) => {
@@ -48,7 +45,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.status(200).send({ data: users }))
+    .then((users) => res.status(200).send(users))
     .catch(next);
 };
 
@@ -56,7 +53,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      res.status(200).send({ data: user });
+      res.status(200).send(user);
     })
     .catch(next);
 };
@@ -88,7 +85,7 @@ module.exports.updateUserInfo = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      res.status(200).send({ data: user });
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

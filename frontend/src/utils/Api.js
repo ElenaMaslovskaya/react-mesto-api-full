@@ -91,11 +91,11 @@ export class Api {
       })
          .then(res => this._serverResponse(res))
    }
-   
+
    //лайки
    changeCardLikeStatus(cardId, isLiked, token) {
       return fetch(`${this.source}/cards/${cardId}/likes`, {
-         method: `${isLiked ? "PUT" : "DELETE"}`,
+         method: `${isLiked ? "DELETE" : "PUT"}`,
          headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json",
@@ -108,5 +108,6 @@ export class Api {
 
 
 export const api = new Api({
-   source: 'https://api.maslovski.praktikum.nomoredomains.work',
+   // source: 'https://api.maslovski.praktikum.nomoredomains.work',
+   source: 'http://localhost:3000'
 })
