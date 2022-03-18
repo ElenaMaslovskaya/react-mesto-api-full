@@ -108,6 +108,5 @@ export class Api {
 
 
 export const api = new Api({
-   // source: 'https://api.maslovski.praktikum.nomoredomains.work',
-   source: 'http://localhost:3000'
+   source: 'https://api.maslovski.praktikum.nomoredomains.work',
 })
