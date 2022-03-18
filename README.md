@@ -4,7 +4,7 @@
 
 Frontend и Backend развернуты на `Яндекс.Облако`. Само приложение можно найти так:
 
-:pushpin: <51.250.14.93> - публичный IP-адрес сервера
+:pushpin: [51.250.14.93](http://51.250.14.93/) - публичный IP-адрес сервера
 
 :pushpin: <https://maslovski.praktikum.nomoredomains.xyz/> - домен
 
