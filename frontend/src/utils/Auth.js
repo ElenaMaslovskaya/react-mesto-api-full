@@ -76,6 +76,6 @@ export class Auth {
 }
 
 export const auth = new Auth({
-   //baseURL: 'https://api.maslovski.praktikum.nomoredomains.work',
-   baseURL: 'http://localhost:3001',
+   baseURL: 'https://api.maslovski.praktikum.nomoredomains.work',
+   //baseURL: 'http://localhost:3001',
 })
