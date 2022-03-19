@@ -188,7 +188,7 @@ function App() {
             .then((res) => {
                 if (res) {
                     setSignupState(true);
-                    handleLogin({ password, email })
+                    history.push('/sign-in')
                 }
             })
             .catch(() => {

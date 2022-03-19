@@ -33,7 +33,7 @@ const validateUser = celebrate({
     about: Joi.string().min(2).max(20),
     avatar: Joi.string().custom(urlValidation),
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required().min(6),
   }),
 });
 
@@ -53,7 +53,7 @@ const validateAvatar = celebrate({
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required().min(6),
   }),
 });
 
