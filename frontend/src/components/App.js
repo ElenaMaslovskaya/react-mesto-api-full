@@ -113,7 +113,7 @@ function App() {
         setIsLoading(true);
         api.updateUserAvatar(avatar, token)
             .then((avatar) => {
-                setCurrentUser(avatar);
+                setCurrentUser(avatar.data);
                 closeAllPopups();
             })
             .catch((err) => {
@@ -186,6 +186,7 @@ function App() {
         setIsLoading(true);
         auth.register(email, password)
             .then((res) => {
+                console.log(res);
                 if (res) {
                     setSignupState(true);
                     history.push('/sign-in')
