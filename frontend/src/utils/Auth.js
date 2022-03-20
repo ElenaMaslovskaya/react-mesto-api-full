@@ -2,6 +2,13 @@ export class Auth {
    constructor(config) {
       this.baseURL = config.baseURL
    }
+
+   _checkResponse(res) {
+      if (res.ok) {
+         return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+   }
    //registration
    register(email, password) {
       return fetch(`${this.baseURL}/signup`, {
@@ -15,16 +22,7 @@ export class Auth {
             password: password,
          }),
       })
-         .then((res) => {
-            if (res.status !== 400) {
-               return res.json();
-            } else {
-               throw new Error('Некорректно заполнено одно из полей');
-            }
-         })
-         .then((res) => {
-            return res;
-         })
+      .then(res => this._checkResponse(res))
    };
    //authorisation
    authorize(email, password) {
@@ -36,17 +34,7 @@ export class Auth {
          },
          body: JSON.stringify({ email, password }),
       })
-         .then((res) => {
-            if (res.status === 200) {
-               return res.json();
-            }
-            if (res.status === 400) {
-               throw new Error('Не передано одно из полей');
-            }
-            if (res.status === 401) {
-               throw new Error('Пользователь с email не найден');
-            }
-         })
+      .then(res => this._checkResponse(res))
    };
 
    getData(token) {
@@ -58,17 +46,7 @@ export class Auth {
             'Authorization': `Bearer ${token}`,
          },
       })
-         .then((res) => {
-            if (res.status === 200) {
-               return res.json();
-            }
-            if (res.status === 400) {
-               throw new Error('Токен не передан или передан не в том формате');
-            }
-            if (res.status === 401) {
-               throw new Error('Переданный токен некорректен');
-            }
-         })
+      .then(res => this._checkResponse(res))
          .then((data) => {
             return data;
          })
@@ -76,6 +54,6 @@ export class Auth {
 }
 
 export const auth = new Auth({
-   baseURL: 'https://api.maslovski.praktikum.nomoredomains.work',
-   //baseURL: 'http://localhost:3001',
+   //baseURL: 'https://api.maslovski.praktikum.nomoredomains.work',
+   baseURL: 'http://localhost:3001',
 })

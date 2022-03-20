@@ -3,7 +3,6 @@ import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup(props) {
    const avatarRef = React.useRef();
-   console.log(avatarRef);
    const avatarUser = avatarRef;
 
    React.useEffect(() => {
