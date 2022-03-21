@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
-const { JWT_SECRET = 'dev-secret' } = process.env;
+const { JWT_SECRET } = process.env;
 
 const bearerToken = (header) => header.replace('Bearer ', '');
 
