@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -13,6 +12,7 @@ const users = require('./routes/users');
 const cards = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
+require('dotenv').config();
 
 const { PORT = 3001 } = process.env;
 
