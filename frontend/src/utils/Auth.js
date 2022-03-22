@@ -1,6 +1,6 @@
 export class Auth {
-   constructor(config) {
-      this.baseURL = config.baseURL
+   constructor({ baseURL }) {
+      this._baseURL = baseURL
    }
 
    _checkResponse(res) {
@@ -11,7 +11,7 @@ export class Auth {
    }
    //registration
    register(email, password) {
-      return fetch(`${this.baseURL}/signup`, {
+      return fetch(`${this._baseURL}/signup`, {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -22,11 +22,11 @@ export class Auth {
             password: password,
          }),
       })
-      .then(res => this._checkResponse(res))
+         .then(res => this._checkResponse(res))
    };
    //authorisation
    authorize(email, password) {
-      return fetch(`${this.baseURL}/signin`, {
+      return fetch(`${this._baseURL}/signin`, {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -34,11 +34,11 @@ export class Auth {
          },
          body: JSON.stringify({ email, password }),
       })
-      .then(res => this._checkResponse(res))
+         .then(res => this._checkResponse(res))
    };
 
    getData(token) {
-      return fetch(`${this.baseURL}/users/me`, {
+      return fetch(`${this._baseURL}/users/me`, {
          method: 'GET',
          headers: {
             'Accept': 'application/json',
@@ -46,7 +46,7 @@ export class Auth {
             'Authorization': `Bearer ${token}`,
          },
       })
-      .then(res => this._checkResponse(res))
+         .then(res => this._checkResponse(res))
          .then((data) => {
             return data;
          })
