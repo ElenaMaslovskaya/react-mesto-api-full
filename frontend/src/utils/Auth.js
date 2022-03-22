@@ -47,9 +47,6 @@ export class Auth {
          },
       })
          .then(res => this._checkResponse(res))
-         .then((data) => {
-            return data;
-         })
    };
 }
 
